@@ -1,0 +1,64 @@
+spring:
+  output:
+    ansi:
+      enabled: always
+  application:
+    name: ${PROJECT_NAME:poc-batch-redis}
+  h2:
+    console:
+      enabled: true
+  batch:
+    jdbc:
+      platform: h2
+      initialize-schema: always
+    job:
+      enabled: false
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    database: h2
+    generate-ddl: false
+    show-sql: true
+#  autoconfigure:
+#    exclude:
+#      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+#       - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+server:
+  port: ${PORTA:8080}
+
+app:
+  database:
+    mysql:
+      username: root
+      password: root
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: 'jdbc:mysql://localhost:3306/real_db'
+      pool-name: MySQLPoolName
+      min-pool-size: 1
+      max-pool-size: 10
+      max-lifetime: 1800000
+      validation-timeout: 250
+      idle-timeout: 30000
+      connection-timeout: 20000
+      leak-detection-threshold: 300
+    h2:
+      username: admin
+      password: ''
+      driver-class-name: org.h2.Driver
+      url: jdbc:h2:mem:db-poc;DB_CLOSE_DELAY=-1 #To keep the database open, add ;DB_CLOSE_DELAY=-1 to the database URL.
+      pool-name: H2PoolName
+      min-pool-size: 1
+      max-pool-size: 10
+      max-lifetime: 1800000
+      validation-timeout: 250
+      idle-timeout: 30000
+      connection-timeout: 20000
+      leak-detection-threshold: 300
+  scheduled:
+    JobUpperCase:
+      cron: '30 */1 * * * *' #Execução a cada 1 minuto
