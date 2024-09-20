@@ -18,15 +18,11 @@ spring:
     database: h2
     generate-ddl: false
     show-sql: true
+
 #  autoconfigure:
 #    exclude:
 #      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 #       - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
 
 server:
   port: ${PORTA:8080}
@@ -61,10 +57,42 @@ app:
       leak-detection-threshold: 300
   scheduled:
     JobUpperCase:
-      cron: '30 */2 * * * *'
+      cron: '0 */2 * * * *'
 logging:
   level:
-    root: debug
+    root: info
     network: info
   group:
     network: sun.rmi, javax.management.remote.rmi
+management:
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        add-additional-paths: true
+        enabled: true
+    env:
+      show-values: always
+  info:
+    git:
+      enabled: true
+      mode: full
+    java:
+      enabled: true
+    os:
+      enabled: true
+    build:
+      enabled: true
+    process:
+      enabled: true
+  health:
+    probes:
+      enabled: true
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'

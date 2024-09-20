@@ -23,7 +23,7 @@ public class PaisesItemWriter implements ItemWriter<List<Paises>> {
 
   @Override
   public void write(Chunk<? extends List<Paises>> chunk) {
-    log.info("|| INICIO Gravação");
+    log.info("|| ======== INICIO Gravação =======");
     List<Paises> paises = chunk.getItems().get(0);
     if(paises == null || paises.isEmpty()){
       log.info("|| Sem items para gravar");
@@ -50,6 +50,6 @@ public class PaisesItemWriter implements ItemWriter<List<Paises>> {
               .build();
       jobUpperCaseRepository.save(jobRedis);
     }
-    log.info("|| FIM Gravação");
+    log.info("|| ========= FIM Gravação =========");
   }
 }

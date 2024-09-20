@@ -30,7 +30,7 @@ public class PaisesItemReader implements ItemStreamReader<List<Paises>> {
 
   @Override
   public List<Paises> read() throws Exception {
-    log.info("|| INICIO Leitura");
+    log.info("|| ======== INICIO Leitura ========");
     Paises atual = jdbcCursorItemReader.read();
 
     if(atual == null){
@@ -38,11 +38,11 @@ public class PaisesItemReader implements ItemStreamReader<List<Paises>> {
       JobRedis jobRedis = opt.get();
       if(jobRedis != null){
         jobRedis.setIsExecuting(Boolean.FALSE);
-        log.info("Atualizando status no Redis");
+        log.info("|| Atualizando status no Redis");
         jobUpperCaseRepository.save(jobRedis);
       }
       else{
-        //TODO Usar instancia recuperada do Redis
+        //TODO Usar instância recuperada do Redis
         jobRedis = JobRedis.builder()
                 .id(Constants.JOB_UPPER_CASE_NAME)
                 .cron("")
@@ -61,7 +61,7 @@ public class PaisesItemReader implements ItemStreamReader<List<Paises>> {
       atual = jdbcCursorItemReader.read();
     }
     log.info("|| Tamanho: " + lista.size());
-    log.info("|| FIM Leitura");
+    log.info("|| ========= FIM Leitura ==========");
     return lista;
   }
 

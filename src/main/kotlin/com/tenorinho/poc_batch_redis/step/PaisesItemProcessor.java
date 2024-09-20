@@ -20,15 +20,21 @@ public class PaisesItemProcessor implements ItemProcessor<List<Paises>, List<Pai
     @Autowired private RedisJobRepository jobUpperCaseRepository;
 
     @Override
-    public List<Paises> process(List<Paises> list){
+    public List<Paises> process(List<Paises> list) throws InterruptedException {
+        log.info("|| ======= INICIO Processor =======");
         Random random = new Random();
         Long l = random.nextLong();
+
+        for(int i = 0; i < 50; i++){
+            Thread.sleep(1000);
+        }
+
         if(list == null || list.isEmpty()){
             Optional<JobRedis> opt = jobUpperCaseRepository.findById(Constants.JOB_UPPER_CASE_NAME);
             JobRedis jobRedis = opt.get();
             if(jobRedis != null){
                 jobRedis.setIsExecuting(Boolean.FALSE);
-                log.info("Atualizando status no Redis");
+                log.info("|| Atualizando status no Redis");
                 jobUpperCaseRepository.save(jobRedis);
             }
             else{
@@ -43,17 +49,17 @@ public class PaisesItemProcessor implements ItemProcessor<List<Paises>, List<Pai
                 jobUpperCaseRepository.save(jobRedis);
             }
             log.info("|| Sem items para processar");
-            log.info("|| FIM Processor");
+            log.info("|| ========= FIM Processor ========");
             return null;
         }
-        log.info("|| Tamanho:" + list.size());
+        log.info("|| Tamanho: " + list.size());
         for(int i = 0; i < list.size(); i++){
             Paises pais = list.get(i);
             pais.setNome(pais.getNome().toUpperCase());
             pais.setValido("S");
             pais.setPodRandomValue(l+"");
         }
-        log.info("|| FIM Processor");
+        log.info("|| ========= FIM Processor ========");
         return list;
     }
 }
